@@ -1,8 +1,9 @@
 import NextAuth from 'next-auth';
-import Google from 'next-auth/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { db } from '@/db';
 import type { Adapter } from 'next-auth/adapters';
+import authConfig from '@/auth.config';
+import { Prisma } from '@prisma/client';
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -12,19 +13,17 @@ if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET){
 }
 
 export const {
-    GET,
-    POST, 
+    handlers: {
+        GET,
+        POST, 
+    },
     auth, 
-    signOut, 
-    signIn 
+    signIn,
+    signOut,
 } = NextAuth({
-    adapter: PrismaAdapter(db) as Adapter,
-    providers: [
-        Google({
-            clientId: GOOGLE_CLIENT_ID,
-            clientSecret: GOOGLE_CLIENT_SECRET,
-        })
-    ],
+    adapter: PrismaAdapter(db),
+    session: { strategy: "jwt"},
+    ...authConfig,
     callbacks: {
         //might need
         // async session ({ session, user }: any) {
@@ -34,4 +33,4 @@ export const {
         //     return session;
         // }
     }
-})
+});
