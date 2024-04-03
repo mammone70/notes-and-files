@@ -18,6 +18,9 @@ export const NewVerificationForm = () => {
     const token = searchParams.get("token");
 
     const onSubmit = useCallback(() => {
+        //prevent fringe cases where form is rendered multiple times
+        // if (success || error) return;
+    
         if(!token) {
             setError("Missing Token");
             return;

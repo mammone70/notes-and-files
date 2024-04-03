@@ -9,7 +9,7 @@ datasource db {
 
 model Account {
   id                String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId           String    @db.ObjectId
+  userId            String    @db.ObjectId
   type              String
   provider          String
   providerAccountId String
@@ -49,6 +49,8 @@ model User {
   role          UserRole  @default(USER)
   accounts      Account[]
   sessions      Session[]
+  isTwoFactorEnabled Boolean  @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
 }
 
 model VerificationToken {
@@ -58,4 +60,32 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([email, token])
+}
+
+//separate Password Reset from Verification token for security purposes
+model PasswordResetToken {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  email      String
+  token      String    @unique
+  expires    DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  email      String
+  token      String    @unique
+  expires    DateTime
+
+  @@unique([email, token])
+}
+
+//TODO Add expiration of confirmation and track by device/app
+model TwoFactorConfirmation {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String    @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
 }
