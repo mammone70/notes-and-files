@@ -7,7 +7,7 @@ export default function Navbar() {
     <nav className="border-b bg-background h-[10vh] flex items-center">
         <div className="container flex items-center justify-between">
             <Link href="/">
-                <h1 className="font-bold text-3xl">Sweet Dispo</h1>
+                <h1 className="font-bold text-3xl">Notes And Files</h1>
             </Link>
         </div>
         <div className="container flex items-center gap-x-5 justify-end">

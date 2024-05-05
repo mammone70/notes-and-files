@@ -11,14 +11,13 @@ export default function Home() {
           <div>
             <span className="w-auto px-6 py-3 rounded-full bg-secondary">
               <span className="text-sm font-medium text-primary">
-                Manage all of your Dispositions
+                Manage All of Your Personal Notes and Files
               </span>
             </span>
 
-            <h1 className="mt-8 text-3xl font-extrabold -tracking-tight lg:text-6xl">Easily Market Your Deals</h1>
+            <h1 className="mt-8 text-3xl font-extrabold -tracking-tight lg:text-6xl">Organize And Chat With Your Data</h1>
             <p className="max-w-xl mx-auto mt-8 text-base lg:text-xl font-bold text-muted-foreground">
-              Here are several lines of copy explaining what this product
-              does and how it can benefit you.
+              Then Semanitcally Search Them With Ease
             </p>
           </div> 
           <div className="flex justify-center max-w-sm mx-auto mt-10">
