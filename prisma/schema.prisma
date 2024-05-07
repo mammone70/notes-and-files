@@ -1,10 +1,12 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  extensions = [vector]
 }
 
 enum UserRole {
@@ -22,6 +24,7 @@ model User {
   role                UserRole        @default(USER)
   accounts            Account[]
   sessions            Session[]
+  files               File[]
   twoFactorConf       TwoFactorConfirmation?
   isTwoFactorEnabled  Boolean    @default(false)
   
@@ -97,3 +100,33 @@ model TwoFactorConfirmation {
   
   @@unique([userId])
 }
+
+enum FileType {
+  TEXT
+  PDF
+}
+
+//metadata about files in storage
+model File {
+  id            String    @id @default(cuid())
+  userId        String    
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url           String
+  name          String
+  fileType      FileType
+  fileSections  FileSection[]
+  
+  @@unique([userId])
+}
+
+//Sections of all files in storage including their vector embeddings
+model FileSection {
+  id          String    @id @default(cuid())
+  fileId      String
+  file        File      @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  content     String
+  embedding   Unsupported("vector(384)")?
+
+  @@unique([fileId])
+}
+
