@@ -1,21 +1,30 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { logout } from "@/actions/logout";
+import { startTransition } from "react";
 
-interface LoginButtonProps {
+interface LogoutButtonProps {
     children: React.ReactNode;
     mode?: "modal" | "redirect";
     asChild?: boolean;
 }
 
-export const LoginButton = ({
+export const LogoutButton = ({
     children,
     mode = "redirect",
     asChild
-}: LoginButtonProps) => {
+}: LogoutButtonProps) => {
     const router = useRouter();
     
     const onClick = () => {
-        router.push("/auth/register");
+        startTransition(() => {
+            logout()
+                .then((data) => {
+                    router.push("/auth/login");
+                })
+                //TODO
+                .catch(() => {});
+        });
     }   
 
     if (mode === "modal") {
