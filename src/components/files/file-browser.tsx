@@ -115,8 +115,7 @@ export function FileBrowser({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All</SelectItem>
-                <SelectItem value="image">Image</SelectItem>
-                <SelectItem value="csv">CSV</SelectItem>
+                <SelectItem value="txt">Text</SelectItem>
                 <SelectItem value="pdf">PDF</SelectItem>
               </SelectContent>
             </Select>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+
 import {
   Form,
   FormControl,
@@ -9,7 +10,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
+
 import {
   Dialog,
   DialogContent,
@@ -27,20 +30,13 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 
-import { useSession } from "next-auth/react";
-
-const formSchema = z.object({
-  title: z.string().min(1).max(200),
-  file: z
-    .custom<FileList>((val) => val instanceof FileList, "Required")
-    .refine((files) => files.length > 0, `Required`),
-});
+import { UploadFileSchema } from "@/schemas";
 
 export function UploadButton() {
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof UploadFileSchema>>({
+    resolver: zodResolver(UploadFileSchema),
     defaultValues: {
       title: "",
       file: undefined,
@@ -49,8 +45,7 @@ export function UploadButton() {
 
   const fileRef = form.register("file");
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!orgId) return;
+  async function onSubmit(values: z.infer<typeof UploadFileSchema>) {
 
     const fileType = values.file[0].type;
 
@@ -68,12 +63,12 @@ export function UploadButton() {
     // } as Record<string, Doc<"files">["type"]>;
 
     try {
-    //   await createFile({
-    //     name: values.title,
-    //     fileId: storageId,
-    //     orgId,
-    //     type: types[fileType],
-    //   });
+      // await createFile({
+      //   name: values.title,
+      //   fileId: storageId,
+      //   orgId,
+      //   type: types[fileType],
+      // });
 
       form.reset();
 
@@ -93,14 +88,7 @@ export function UploadButton() {
     }
   }
 
-  let orgId: string | undefined = undefined;
-//   if (organization.isLoaded && user.isLoaded) {
-//     orgId = organization.organization?.id ?? user.user?.id;
-//   }
-
   const [isFileDialogOpen, setIsFileDialogOpen] = useState(false);
-
-//   const createFile = useMutation(api.files.createFile);
 
   return (
     <Dialog
@@ -117,7 +105,7 @@ export function UploadButton() {
         <DialogHeader>
           <DialogTitle className="mb-8">Upload your File Here</DialogTitle>
           <DialogDescription>
-            This file will be accessible by anyone in your organization
+            This file will only be accessible to you.
           </DialogDescription>
         </DialogHeader>
 
