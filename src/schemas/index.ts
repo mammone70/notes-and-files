@@ -36,7 +36,40 @@ export const RegisterSchema = z.object({
 
 export const UploadFileSchema = z.object({
     title: z.string().min(1).max(200),
-    file: z
+    files: z
       .custom<FileList>((val) => val instanceof FileList, "Required")
       .refine((files) => files.length > 0, `Required`),
+  });
+
+  export const UploadFileServerSchema = z.object({
+    preview: z
+      .unknown()
+      .optional()
+      .transform((value) => {
+        return value as File | null | undefined;
+      })
+    //   .refine(
+    //     (file) => {
+    //       if (!file) {
+    //         return true;
+    //       }
+  
+    //       const fileExtension = file.name.split('.').pop();
+  
+    //       return !!fileExtension && validExtensions.includes(fileExtension);
+    //     },
+    //     { message: `Valid types: ${validExtensions}` },
+    //   )
+    //   .refine(
+    //     (file) => {
+    //       if (!file) {
+    //         return true;
+    //       }
+  
+    //       return toMb(file.size) <= MAX_FILE_SIZE_MB;
+    //     },
+    //     {
+    //       message: `File size must be less than ${MAX_FILE_SIZE_MB}MB`,
+    //     },
+    //   ),
   });

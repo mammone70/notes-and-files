@@ -29,8 +29,8 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
-
 import { UploadFileSchema } from "@/schemas";
+import { uploadFile } from "@/actions/upload-file";
 
 export function UploadButton() {
   const { toast } = useToast();
@@ -39,16 +39,24 @@ export function UploadButton() {
     resolver: zodResolver(UploadFileSchema),
     defaultValues: {
       title: "",
-      file: undefined,
+      files: undefined,
     },
   });
 
-  const fileRef = form.register("file");
+  const fileRef = form.register("files");
 
   async function onSubmit(values: z.infer<typeof UploadFileSchema>) {
+    
+    const formData = new FormData();
+    formData.append("title", values.title);
 
-    const fileType = values.file[0].type;
+    Array.from(values.files).forEach((file) => {
+      formData.append("files", file);
+    });
 
+
+    await uploadFile(formData);
+    
     // const result = await fetch(postUrl, {
     //   method: "POST",
     //   headers: { "Content-Type": fileType },
@@ -128,12 +136,12 @@ export function UploadButton() {
 
               <FormField
                 control={form.control}
-                name="file"
+                name="files"
                 render={() => (
                   <FormItem>
                     <FormLabel>File</FormLabel>
                     <FormControl>
-                      <Input type="file" {...fileRef} />
+                      <Input multiple={true} type="file" {...fileRef} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
