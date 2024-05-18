@@ -39,7 +39,10 @@ export const {
         }
     },
     adapter: PrismaAdapter(db),
-    session: { strategy: "jwt"},
+    session: { 
+        strategy: "jwt",
+        maxAge: 900, //15 minutes
+    },
     ...authConfig,
     callbacks: {
         async signIn({ user, account }) {
@@ -87,12 +90,15 @@ export const {
             if (token.role && session.user) {
                 session.user.role = token.role as UserRole;
             }
+
             return session;
         },
         async jwt({ token }) {
            //not logged in
             if(!token.sub) return token;
             
+            token.exp = Math.round(Date.now() / 1000) + 900;
+
             const existingUser = await getUserById(token.sub);
 
             if (!existingUser) return token; //new user

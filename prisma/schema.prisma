@@ -111,7 +111,7 @@ model File {
   id            String    @id @default(cuid())
   userId        String    
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  url           String
+  bucketName    String
   name          String
   fileType      FileType
   fileSections  FileSection[]
