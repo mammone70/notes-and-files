@@ -30,7 +30,8 @@ export const uploadFile = async (formData: FormData) => {
     const files = formData.getAll("files") as File[];
     const title = formData.get("title");
     
-    // Promise.allSettled(
+    //if any Promise fails, rollback everything
+    // Promise.all(
     //     files.map(async (file) => {
             
             //upload files to bucket
@@ -49,7 +50,10 @@ export const uploadFile = async (formData: FormData) => {
             const docs = await loader.load();
             
             const vectorStore = PrismaVectorStore.withModel<FileSection>(db).create(
-                new OllamaEmbeddings(),
+                new OllamaEmbeddings({
+                    model: 'nomic-embed-text:latest',
+                    baseUrl: "http://localhost:11434",
+                }),
                 {
                     prisma: Prisma,
                     tableName: "FileSection",

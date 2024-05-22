@@ -8,7 +8,6 @@ import NavMenu from "@/components/nav-menu";
 
 export default async function Navbar() {
     const session = await auth();
-
     return (
         <nav className="border-b bg-background h-[10vh] flex items-center">
             <div className="container flex items-end">
@@ -35,7 +34,7 @@ export default async function Navbar() {
                         :
                             <LoginButton>
                                 <Button>
-                                    Sign In/Up
+                                    Sign In
                                 </Button>
                             </LoginButton>
                     }

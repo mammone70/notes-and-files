@@ -97,7 +97,7 @@ export const {
            //not logged in
             if(!token.sub) return token;
             
-            token.exp = Math.round(Date.now() / 1000) + 900;
+            //token.exp = Math.round(Date.now() / 1000) + 900;
 
             const existingUser = await getUserById(token.sub);
 

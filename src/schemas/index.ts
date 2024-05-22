@@ -1,5 +1,7 @@
 import * as z from "zod";
 
+const DEFAULT_CHAT_MESSAGE_SIZE : string = "1500";
+
 export const NewPasswordSchema = z.object({
     password: z.string().min(6, {
         message: "Minimum of 6 characters required.",
@@ -32,6 +34,16 @@ export const RegisterSchema = z.object({
     name: z.string().min(1, {
         message: "Name is required.",
     }),
+});
+
+export const ChatSchema = z.object({
+    message: z.string()
+        .min(1, {
+            message: "Chat message must contain at least 1 character.",
+        })
+        .max(parseInt(process.env.MAX_CHAT_MESSAGE_SIZE || DEFAULT_CHAT_MESSAGE_SIZE), {
+            message: `Chat message must not be longer than ${process.env.MAX_CHAT_MESSAGE_SIZE}`,
+        }),
 });
 
 export const UploadFileSchema = z.object({

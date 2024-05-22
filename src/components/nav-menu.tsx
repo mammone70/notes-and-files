@@ -19,6 +19,10 @@ const menuItems : {text: string, path: string}[] = [
         text: "Files",
         path: "/files",
     },
+    {
+        text: "Chat",
+        path: "/chat",
+    },
 ]
 
 export default function NavMenu() {
