@@ -44,6 +44,10 @@ export const ChatSchema = z.object({
         .max(parseInt(process.env.MAX_CHAT_MESSAGE_SIZE || DEFAULT_CHAT_MESSAGE_SIZE), {
             message: `Chat message must not be longer than ${process.env.MAX_CHAT_MESSAGE_SIZE}`,
         }),
+    conversation : z.string()
+        .max(parseInt(process.env.MAX_CHAT_MESSAGE_SIZE || DEFAULT_CHAT_MESSAGE_SIZE), {
+            message: `Chat conversation must not be longer than ${process.env.MAX_CHAT_MESSAGE_SIZE}`,
+        }),
 });
 
 export const UploadFileSchema = z.object({

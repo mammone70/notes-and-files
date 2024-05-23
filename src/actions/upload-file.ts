@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { WebPDFLoader } from "langchain/document_loaders/web/pdf";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
 import { saveFileInBucket } from "@/lib/minio-file-storage";
 // import { UploadFileSchema } from "@/schemas";
@@ -45,10 +46,18 @@ export const uploadFile = async (formData: FormData) => {
             //save file info to database
             //TODO do this in a batch db call
 
-            //split pdf
             const loader = new WebPDFLoader(new Blob([fileBuffer]));
             const docs = await loader.load();
             
+            //split pdf
+            const splitter = new RecursiveCharacterTextSplitter({
+                chunkSize: 200,
+                chunkOverlap: 10,
+            });
+
+            const splitDocs = await splitter.splitDocuments(docs);
+
+            //TODO move vectorstore to singleton
             const vectorStore = PrismaVectorStore.withModel<FileSection>(db).create(
                 new OllamaEmbeddings({
                     model: 'nomic-embed-text:latest',
@@ -89,7 +98,7 @@ export const uploadFile = async (formData: FormData) => {
                         } 
                     })
                 ])
-            )
+            );
 
             // const fileSections = [];
 

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useSession } from "next-auth/react";
+import { File } from "@prisma/client";
 
 function Placeholder() {
   return (
@@ -44,8 +45,8 @@ export function FileBrowser({
 }) {
     const session = useSession();
   
-  // const [query, setQuery] = useState("");
-  // const [type, setType] = useState<Doc<"files">["type"] | "all">("all");
+  const [query, setQuery] = useState("");
+  const [type, setType] = useState<File<"files">["type"] | "all">("all");
 
   // let orgId: string | undefined = undefined;
   // if (organization.isLoaded && user.isLoaded) {
