@@ -9,16 +9,16 @@ import NavMenu from "@/components/nav-menu";
 export default async function Navbar() {
     const session = await auth();
     return (
-        <nav className="border-b bg-background h-[10vh] flex items-center">
+        <nav className="bg-background h-[10vh] flex items-center">
             <div className="container flex items-end">
                 <Link href="/">
                     <h1 className="font-bold text-3xl">Notes And Files</h1>
                 </Link>
-                { session &&
+                {/* { session &&
                     <div className="px-8 font-bold"> 
                         <NavMenu></NavMenu>
                     </div>
-                }
+                } */}
             </div>
             <div className="container flex items-center gap-x-5 justify-end">
                 <ThemeToggle/>

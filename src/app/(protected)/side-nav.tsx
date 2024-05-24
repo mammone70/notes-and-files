@@ -2,7 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
-import { FileIcon, StarIcon, TrashIcon } from "lucide-react";
+import { 
+  FileIcon, 
+  StarIcon, 
+  TrashIcon, 
+  MessageSquare  
+} from "lucide-react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -10,37 +16,49 @@ export function SideNav() {
   const pathname = usePathname();
 
   return (
-    <div className="w-40 flex flex-col gap-4">
-      <Link href="/dashboard/files">
+    <div className="w-15 flex flex-col gap-4 bg-muted/50 border-r rounded-m min-h-[100vh]">
+      <Link href="/files">
         <Button
           variant={"link"}
           className={clsx("flex gap-2", {
-            "text-blue-500": pathname.includes("/dashboard/files"),
+            "bg-secondary": pathname.includes("/files"),
           })}
         >
-          <FileIcon /> All Files
+          <FileIcon />
+        </Button>
+      </Link>
+          
+      <Link href="/favorites">
+        <Button
+          variant={"link"}
+          className={clsx("flex gap-2", {
+            "bg-secondary" : pathname.includes("/favorites"),
+          })}
+        >
+          <StarIcon />
         </Button>
       </Link>
 
-      <Link href="/dashboard/favorites">
+      <Link href="/chat">
         <Button
           variant={"link"}
           className={clsx("flex gap-2", {
-            "text-blue-500": pathname.includes("/dashboard/favorites"),
+            // "text-blue-500": pathname.includes("/chat"),
+            "bg-secondary": pathname.includes("/chat"),
           })}
         >
-          <StarIcon /> Favorites
+          <MessageSquare />
         </Button>
       </Link>
 
-      <Link href="/dashboard/trash">
+      <Link href="/trash">
         <Button
           variant={"link"}
           className={clsx("flex gap-2", {
-            "text-blue-500": pathname.includes("/dashboard/trash"),
+            "bg-secondary" : pathname.includes("/trash"),
           })}
         >
-          <TrashIcon /> Trash
+          <TrashIcon />
         </Button>
       </Link>
     </div>

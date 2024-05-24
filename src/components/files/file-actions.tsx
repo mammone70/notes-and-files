@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,17 +28,19 @@ import {
 import { useState } from "react";
 import { toast, useToast } from "@/components/ui/use-toast";
 
+import { File } from "@prisma/client";
 
-type Doc<Type> = {
-    name: string,
-    type: string
-};
+// type File<Type> = {
+//     name: string,
+//     type: string
+// };
 
 export function FileCardActions({
   file,
   isFavorited,
 }: {
-  file: Doc<"files"> & { url: string | null };
+  // file: File<"files"> & { url: string | null };
+  file: File;
   isFavorited: boolean;
 }) {
 //   const deleteFile = useMutation(api.files.deleteFile);
@@ -84,10 +88,10 @@ export function FileCardActions({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem
-            onClick={() => {
-              if (!file.url) return;
-              window.open(file.url, "_blank");
-            }}
+            // onClick={() => {
+            //   if (!file.url) return;
+            //   window.open(file.url, "_blank");
+            // }}
             className="flex gap-1 items-center cursor-pointer"
           >
             <FileIcon className="w-4 h-4" /> Download

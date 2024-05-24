@@ -6,10 +6,10 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="container mx-auto pt-2 min-h-screen h-full">
-      <div className="flex gap-8 h-full">
+    <main className="border rounded-xl mx-auto min-h-screen h-full">
+      <div className="flex h-full">
         <SideNav />
-        <div className="w-full">{children}</div>
+        <div className="w-full p-4">{children}</div>
       </div>
     </main>
   );

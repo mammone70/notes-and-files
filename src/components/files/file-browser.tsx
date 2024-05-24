@@ -1,13 +1,20 @@
-"use client";
-import { UploadButton } from "./upload-button";
-import { FileCard } from "./file-card";
+import { UploadButton } from "@/components/files/upload-button";
+import { FileCard } from "@/components/files/file-card";
 import Image from "next/image";
 import { GridIcon, Loader2, RowsIcon } from "lucide-react";
 import { SearchBar } from "./search-bar";
 import { useState } from "react";
-import { DataTable } from "./file-table";
+import { DataTable } from "@/components/files/file-table";
+
 // import { columns } from "./columns";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { 
+  Tabs, 
+  TabsContent,
+  TabsList, 
+  TabsTrigger 
+} from "@/components/ui/tabs";
+
 import {
   Select,
   SelectContent,
@@ -18,6 +25,8 @@ import {
 import { Label } from "@/components/ui/label";
 import { useSession } from "next-auth/react";
 import { File } from "@prisma/client";
+import { auth } from "@/auth";
+import { getAllFiles } from "@/data/file";
 
 function Placeholder() {
   return (
@@ -34,7 +43,7 @@ function Placeholder() {
   );
 }
 
-export function FileBrowser({
+export async function FileBrowser({
   title,
   favoritesOnly,
   deletedOnly,
@@ -43,10 +52,9 @@ export function FileBrowser({
   favoritesOnly?: boolean;
   deletedOnly?: boolean;
 }) {
-    const session = useSession();
+  const session = await auth();
   
-  const [query, setQuery] = useState("");
-  const [type, setType] = useState<File<"files">["type"] | "all">("all");
+  const files = await getAllFiles();
 
   // let orgId: string | undefined = undefined;
   // if (organization.isLoaded && user.isLoaded) {
@@ -103,7 +111,7 @@ export function FileBrowser({
             </TabsTrigger>
           </TabsList>
 
-          <div className="flex gap-2 items-center">
+          {/* <div className="flex gap-2 items-center">
             <Label htmlFor="type-select">Type Filter</Label>
             <Select
               // value={type}
@@ -120,21 +128,24 @@ export function FileBrowser({
                 <SelectItem value="pdf">PDF</SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
         </div>
 
-        {isLoading && (
+        {/* {isLoading && (
           <div className="flex flex-col gap-8 w-full items-center mt-24">
             <Loader2 className="h-32 w-32 animate-spin text-gray-500" />
             <div className="text-2xl">Loading your files...</div>
           </div>
-        )}
+        )} */}
 
         <TabsContent value="grid">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-4 gap-4">
             {/* {modifiedFiles?.map((file) => {
               return <FileCard key={file._id} file={file} />;
             })} */}
+            {files?.map((file) => {
+              return <FileCard key={file.id} file={file} />;
+            })}
           </div>
         </TabsContent>
         <TabsContent value="table">

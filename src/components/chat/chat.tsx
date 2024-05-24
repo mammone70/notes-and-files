@@ -77,10 +77,10 @@ export default function ChatInterface() {
                             </Tooltip> */}
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                    <Mic className="size-4" />
-                                    <span className="sr-only">Use Microphone</span>
-                                </Button>
+                                    <Button variant="ghost" size="icon">
+                                        <Mic className="size-4" />
+                                        <span className="sr-only">Use Microphone</span>
+                                    </Button>
                                 </TooltipTrigger>
                                 <TooltipContent side="top">Use Microphone</TooltipContent>
                             </Tooltip>
