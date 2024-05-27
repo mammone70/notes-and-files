@@ -53,9 +53,6 @@ export function UploadButton() {
     Array.from(values.files).forEach((file) => {
       formData.append("files", file);
     });
-
-
-    await uploadFile(formData);
     
     // const result = await fetch(postUrl, {
     //   method: "POST",
@@ -78,8 +75,8 @@ export function UploadButton() {
       //   type: types[fileType],
       // });
 
+      await uploadFile(formData);
       form.reset();
-
       setIsFileDialogOpen(false);
 
       toast({
@@ -88,6 +85,7 @@ export function UploadButton() {
         description: "Now everyone can view your file",
       });
     } catch (err) {
+      console.log(err);
       toast({
         variant: "destructive",
         title: "Something went wrong",

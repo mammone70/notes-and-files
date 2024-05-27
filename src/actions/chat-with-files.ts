@@ -7,14 +7,10 @@ import { OllamaEmbeddings } from "@langchain/community/embeddings/ollama";
 import { PrismaVectorStore } from "@langchain/community/vectorstores/prisma";
 import { FileSection, Prisma } from "@prisma/client";
 import * as z from "zod";
-
-export interface ChatWithFilesReturnProps {
-    error? : string,
-    response? : string, 
-}
+import { ReturnProps } from "@/actions/return-props";
 
 export const chatWithFiles = 
-    async (values: z.infer<typeof ChatSchema>) : Promise<ChatWithFilesReturnProps> => {
+    async (values: z.infer<typeof ChatSchema>) : Promise<ReturnProps> => {
         const session = await auth();
         if(!session){
             return { error : "Not authorized to call this action." };

@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import { SideNav } from "./side-nav";
 
 export default function ProtectedLayout({
@@ -11,6 +12,7 @@ export default function ProtectedLayout({
         <SideNav />
         <div className="w-full p-4">{children}</div>
       </div>
+      <Toaster/>
     </main>
   );
 }

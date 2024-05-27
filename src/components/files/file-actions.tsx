@@ -29,6 +29,7 @@ import { useState } from "react";
 import { toast, useToast } from "@/components/ui/use-toast";
 
 import { File } from "@prisma/client";
+import { deleteFile } from "@/actions/upload-file";
 
 // type File<Type> = {
 //     name: string,
@@ -39,16 +40,11 @@ export function FileCardActions({
   file,
   isFavorited,
 }: {
-  // file: File<"files"> & { url: string | null };
   file: File;
   isFavorited: boolean;
 }) {
-//   const deleteFile = useMutation(api.files.deleteFile);
-//   const restoreFile = useMutation(api.files.restoreFile);
-//   const toggleFavorite = useMutation(api.files.toggleFavorite);
-//   const { toast } = useToast();
-//   const me = useQuery(api.users.getMe);
 
+  const { toast } = useToast();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   return (
@@ -58,21 +54,20 @@ export function FileCardActions({
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action will mark the file for our deletion process. Files are
-              deleted periodically
+              This will DELETE THE FILE PERMANATELY!
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={async () => {
-                // await deleteFile({
-                //   fileId: file._id,
-                // });
+                await deleteFile({
+                  id : file.id,
+                });
                 toast({
                   variant: "default",
-                  title: "File marked for deletion",
-                  description: "Your file will be deleted soon",
+                  title: "File Deleted",
+                  description: "Your file will be deleted.",
                 });
               }}
             >
@@ -115,41 +110,17 @@ export function FileCardActions({
               </div>
             )}
           </DropdownMenuItem>
-
-          {/* <Protect
-            condition={(check) => {
-              return (
-                check({
-                  role: "org:admin",
-                }) || file.userId === me?._id
-              );
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              setIsConfirmOpen(true);
             }}
-            fallback={<></>}
+            className="flex gap-1 items-center cursor-pointer"
           >
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                if (file.shouldDelete) {
-                  restoreFile({
-                    fileId: file._id,
-                  });
-                } else {
-                  setIsConfirmOpen(true);
-                }
-              }}
-              className="flex gap-1 items-center cursor-pointer"
-            >
-              {file.shouldDelete ? (
-                <div className="flex gap-1 text-green-600 items-center cursor-pointer">
-                  <UndoIcon className="w-4 h-4" /> Restore
-                </div>
-              ) : (
-                <div className="flex gap-1 text-red-600 items-center cursor-pointer">
-                  <TrashIcon className="w-4 h-4" /> Delete
-                </div>
-              )}
-            </DropdownMenuItem>
-          </Protect> */}
+            <div className="flex gap-1 text-red-600 items-center cursor-pointer">
+              <TrashIcon className="w-4 h-4" /> Delete
+            </div>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

@@ -14,12 +14,15 @@ import * as z from "zod";
 import ollama from 'ollama'
 import { OllamaEmbeddings} from "@langchain/community/embeddings/ollama";
 import { PrismaVectorStore } from "@langchain/community/vectorstores/prisma";
+import { DeleteFileSchema } from "@/schemas";
+import { ReturnProps } from "./return-props";
+import { revalidatePath } from "next/cache";
 
 // export const uploadFile = async (values: z.infer<typeof UploadFileSchema>) => {
 export const uploadFile = async (formData: FormData) => {
     const session = await auth();
     if(!session){
-        return;
+        return { error : "No session." };
     }
     
     // const validateFields = UploadFileSchema.safeParse(values);
@@ -89,16 +92,25 @@ export const uploadFile = async (formData: FormData) => {
 
             //TODO make sure file got inserted
 
-            await vectorStore.addModels(
-                await db.$transaction([
-                    db.fileSection.create({
-                        data: { 
-                            content: docs[0].pageContent,
-                            fileId: dbFile.id,
-                        } 
-                    })
-                ])
-            );
+            //TODO move embedding creation to own container (Deno?)
+            // try {
+            //     await vectorStore.addModels(
+            //         await db.$transaction([
+            //             db.fileSection.create({
+            //                 data: { 
+            //                     content: docs[0].pageContent,
+            //                     fileId: dbFile.id,
+            //                 } 
+            //             })
+            //         ])
+            //     );
+            // }
+            // catch (ex) {
+            //     //TODO Roll back file?
+            //     return { error: "Failed to load embeddings."}
+            // }
+
+            revalidatePath("files");
 
             // const fileSections = [];
 
@@ -116,6 +128,44 @@ export const uploadFile = async (formData: FormData) => {
             
             // console.log(response.embedding);
                
-            console.log(dbFile);
+            // console.log(dbFile);
     // }));
+}
+
+export const deleteFile 
+        = async (values: z.infer<typeof DeleteFileSchema>) 
+            : Promise<ReturnProps> => {
+    
+    const validateFields = DeleteFileSchema.safeParse(values);
+
+    if (!validateFields.success){
+        return { error: "Invalid fields!" };
+    }
+
+    //check if ID exists
+
+    const existingFile = await db.file.findFirst({
+        where : {
+            id : validateFields.data.id,
+        },
+    });
+
+    if(!existingFile) {
+        return { 
+            error : `File with ID ${validateFields.data.id} does not exist.` 
+        };
+    }
+
+    //delete file
+    await db.file.delete({
+        where : {
+            id : validateFields.data.id,
+        },
+    });
+
+    //TODO delete from cloud storage
+    revalidatePath("/files");
+    return { 
+        response : `File with ID ${validateFields.data.id} deleted.` 
+    };
 }

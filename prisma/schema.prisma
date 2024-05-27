@@ -117,6 +117,9 @@ model File {
   fileType     FileType
   fileSections FileSection[]
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@unique([name])
 }
 
@@ -127,6 +130,9 @@ model FileSection {
   file      File                        @relation(fields: [fileId], references: [id], onDelete: Cascade)
   content   String
   embedding Unsupported("vector(768)")?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([fileId])
 }

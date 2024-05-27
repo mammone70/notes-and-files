@@ -74,8 +74,7 @@ export async function FileCard({
             {session?.user?.name}
           </div>
           <div className="text-xs text-gray-700">
-            {/* Uploaded on {formatRelative(new Date(file._creationTime), new Date())} */}
-            Uploaded on TODO
+            Uploaded {formatRelative(new Date(file.createdAt), new Date())}
           </div>
         </CardFooter>
       </Card>

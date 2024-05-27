@@ -57,35 +57,41 @@ export const UploadFileSchema = z.object({
       .refine((files) => files.length > 0, `Required`),
   });
 
-  export const UploadFileServerSchema = z.object({
-    preview: z
-      .unknown()
-      .optional()
-      .transform((value) => {
-        return value as File | null | undefined;
-      })
-    //   .refine(
-    //     (file) => {
-    //       if (!file) {
-    //         return true;
-    //       }
-  
-    //       const fileExtension = file.name.split('.').pop();
-  
-    //       return !!fileExtension && validExtensions.includes(fileExtension);
-    //     },
-    //     { message: `Valid types: ${validExtensions}` },
-    //   )
-    //   .refine(
-    //     (file) => {
-    //       if (!file) {
-    //         return true;
-    //       }
-  
-    //       return toMb(file.size) <= MAX_FILE_SIZE_MB;
-    //     },
-    //     {
-    //       message: `File size must be less than ${MAX_FILE_SIZE_MB}MB`,
-    //     },
-    //   ),
+export const UploadFileServerSchema = z.object({
+preview: z
+    .unknown()
+    .optional()
+    .transform((value) => {
+    return value as File | null | undefined;
+    })
+//   .refine(
+//     (file) => {
+//       if (!file) {
+//         return true;
+//       }
+
+//       const fileExtension = file.name.split('.').pop();
+
+//       return !!fileExtension && validExtensions.includes(fileExtension);
+//     },
+//     { message: `Valid types: ${validExtensions}` },
+//   )
+//   .refine(
+//     (file) => {
+//       if (!file) {
+//         return true;
+//       }
+
+//       return toMb(file.size) <= MAX_FILE_SIZE_MB;
+//     },
+//     {
+//       message: `File size must be less than ${MAX_FILE_SIZE_MB}MB`,
+//     },
+//   ),
+});
+
+export const DeleteFileSchema = z.object({
+    id: z.string({
+        required_error : "ID is required!",
+    }),
   });
